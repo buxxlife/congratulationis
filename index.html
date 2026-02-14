@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONGRATULATIONS ASHLEY!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, #1a0533 0%, #0a001a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* ============ CONFETTI CANVAS ============ */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============ MAIN MESSAGE ============ */
+    .celebration-container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: floatIn 1s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.3);
+    }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: scale(0.3) rotate(-5deg); }
+      50% { opacity: 1; transform: scale(1.1) rotate(2deg); }
+      70% { transform: scale(0.95) rotate(-1deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    .trophy {
+      font-size: 100px;
+      animation: trophyBounce 2s ease-in-out infinite;
+      filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+      margin-bottom: 10px;
+    }
+
+    @keyframes trophyBounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-15px) rotate(-5deg); }
+      75% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .congrats-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      background: linear-gradient(135deg, #FFD700, #FF6B6B, #FF69B4, #87CEEB, #98FB98, #FFD700);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: rainbowShift 3s ease-in-out infinite;
+      text-shadow: none;
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .winner-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 10vw, 8rem);
+      color: #FFD700;
+      text-shadow:
+        0 0 10px rgba(255, 215, 0, 0.8),
+        0 0 30px rgba(255, 215, 0, 0.6),
+        0 0 60px rgba(255, 215, 0, 0.4),
+        0 0 100px rgba(255, 215, 0, 0.2),
+        3px 3px 0 #FF6B6B,
+        6px 6px 0 #FF69B4;
+      animation: nameGlow 2s ease-in-out infinite alternate, namePulse 3s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes nameGlow {
+      from { text-shadow: 0 0 10px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.6), 0 0 60px rgba(255,215,0,0.4), 3px 3px 0 #FF6B6B, 6px 6px 0 #FF69B4; }
+      to { text-shadow: 0 0 20px rgba(255,215,0,1), 0 0 50px rgba(255,215,0,0.8), 0 0 80px rgba(255,215,0,0.6), 0 0 120px rgba(255,215,0,0.3), 3px 3px 0 #FF6B6B, 6px 6px 0 #FF69B4; }
+    }
+
+    @keyframes namePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .subtitle {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 105, 180, 0.7), 2px 2px 0 #FF69B4;
+      animation: subtitlePop 0.8s ease-out 0.5s forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes subtitlePop {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtitle .exclaim {
+      display: inline-block;
+      animation: exciteBounce 0.6s ease-in-out infinite alternate;
+      color: #FF6B6B;
+    }
+
+    .subtitle .exclaim:nth-child(2) { animation-delay: 0.1s; }
+    .subtitle .exclaim:nth-child(3) { animation-delay: 0.2s; }
+    .subtitle .exclaim:nth-child(4) { animation-delay: 0.3s; }
+    .subtitle .exclaim:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes exciteBounce {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-8px) scale(1.3); }
+    }
+
+    /* ============ STARS / SPARKLES ============ */
+    .sparkle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: #FFD700;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      animation: sparkleFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes sparkleFloat {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ============ BURST CIRCLES ============ */
+    .burst {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    .burst-1 {
+      width: 300px; height: 300px;
+      border: 3px solid rgba(255, 215, 0, 0.3);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: burstExpand 3s ease-out infinite;
+    }
+
+    .burst-2 {
+      width: 300px; height: 300px;
+      border: 3px solid rgba(255, 105, 180, 0.3);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: burstExpand 3s ease-out 1s infinite;
+    }
+
+    .burst-3 {
+      width: 300px; height: 300px;
+      border: 3px solid rgba(135, 206, 235, 0.3);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: burstExpand 3s ease-out 2s infinite;
+    }
+
+    @keyframes burstExpand {
+      0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(4); }
+    }
+
+    /* ============ FLOATING EMOJIS ============ */
+    .floating-emoji {
+      position: fixed;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 0;
+      animation: emojiRise 6s ease-in infinite;
+      opacity: 0;
+    }
+
+    @keyframes emojiRise {
+      0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Expanding burst rings -->
+  <div class="burst burst-1"></div>
+  <div class="burst burst-2"></div>
+  <div class="burst burst-3"></div>
+
+  <!-- Main celebration message -->
+  <div class="celebration-container">
+    <div class="trophy">🏆</div>
+    <div class="congrats-text">CONGRATULATIONS</div>
+    <div class="winner-name">ASHLEY</div>
+    <div class="subtitle">
+      You Win The Drawing Contest<span class="exclaim">!</span><span class="exclaim">!</span><span class="exclaim">!</span><span class="exclaim">!</span><span class="exclaim">!</span>
+    </div>
+  </div>
+
+  <script>
+    // ===========================
+    // CONFETTI ENGINE
+    // ===========================
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const CONFETTI_COLORS = [
+      '#FF6B6B', '#FF69B4', '#FFD700', '#87CEEB', '#98FB98',
+      '#DDA0DD', '#FFA07A', '#00CED1', '#FF4500', '#7B68EE',
+      '#FF1493', '#00FF7F', '#FFE4B5', '#FF6347', '#40E0D0',
+      '#EE82EE', '#F0E68C', '#ADD8E6', '#FFB6C1', '#90EE90'
+    ];
+
+    const SHAPES = ['rect', 'circle', 'strip', 'star'];
+
+    class ConfettiPiece {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(initial = false) {
+        this.x = Math.random() * canvas.width;
+        this.y = initial ? Math.random() * canvas.height - canvas.height : -20;
+        this.w = Math.random() * 12 + 5;
+        this.h = Math.random() * 8 + 4;
+        this.color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+        this.shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+        this.velocityY = Math.random() * 3 + 1.5;
+        this.velocityX = Math.random() * 4 - 2;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 10 - 5;
+        this.oscillationSpeed = Math.random() * 0.03 + 0.01;
+        this.oscillationDistance = Math.random() * 60 + 20;
+        this.time = Math.random() * 100;
+        this.opacity = Math.random() * 0.5 + 0.5;
+      }
+
+      update() {
+        this.time += this.oscillationSpeed;
+        this.y += this.velocityY;
+        this.x += Math.sin(this.time) * 1.5 + this.velocityX * 0.3;
+        this.rotation += this.rotationSpeed;
+
+        if (this.y > canvas.height + 20) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+
+        switch (this.shape) {
+          case 'rect':
+            ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+            break;
+          case 'circle':
+            ctx.beginPath();
+            ctx.arc(0, 0, this.w / 2, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+          case 'strip':
+            ctx.fillRect(-this.w / 2, -1, this.w, 3);
+            break;
+          case 'star':
+            this.drawStar(0, 0, 5, this.w / 2, this.w / 4);
+            break;
+        }
+
+        ctx.restore();
+      }
+
+      drawStar(cx, cy, spikes, outerR, innerR) {
+        let rot = (Math.PI / 2) * 3;
+        let step = Math.PI / spikes;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerR);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(cx + Math.cos(rot) * outerR, cy + Math.sin(rot) * outerR);
+          rot += step;
+          ctx.lineTo(cx + Math.cos(rot) * innerR, cy + Math.sin(rot) * innerR);
+          rot += step;
+        }
+        ctx.lineTo(cx, cy - outerR);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+    // Create 300 confetti pieces for a dense, screen-filling effect
+    const confettiPieces = [];
+    for (let i = 0; i < 300; i++) {
+      confettiPieces.push(new ConfettiPiece());
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach(piece => {
+        piece.update();
+        piece.draw();
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+
+    animateConfetti();
+
+    // ===========================
+    // SPARKLES
+    // ===========================
+    function createSparkles() {
+      for (let i = 0; i < 40; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = Math.random() * 100 + 'vw';
+        sparkle.style.top = Math.random() * 100 + 'vh';
+        sparkle.style.animationDelay = Math.random() * 4 + 's';
+        sparkle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        sparkle.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+        sparkle.style.width = (Math.random() * 6 + 2) + 'px';
+        sparkle.style.height = sparkle.style.width;
+        sparkle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px ${sparkle.style.background}`;
+        document.body.appendChild(sparkle);
+      }
+    }
+    createSparkles();
+
+    // ===========================
+    // FLOATING CELEBRATION EMOJIS
+    // ===========================
+    const celebrationEmojis = ['🎨', '🖌️', '🎉', '🥇', '⭐', '🌟', '✨', '🎊', '👑', '🏅', '🎖️', '💫'];
+
+    function launchEmoji() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('floating-emoji');
+      emoji.textContent = celebrationEmojis[Math.floor(Math.random() * celebrationEmojis.length)];
+      emoji.style.left = Math.random() * 100 + 'vw';
+      emoji.style.animationDuration = (Math.random() * 4 + 4) + 's';
+      emoji.style.animationDelay = '0s';
+      emoji.style.fontSize = (Math.random() * 30 + 25) + 'px';
+      document.body.appendChild(emoji);
+
+      setTimeout(() => emoji.remove(), 8000);
+    }
+
+    // Launch emojis at intervals
+    setInterval(launchEmoji, 400);
+    // Initial burst
+    for (let i = 0; i < 10; i++) {
+      setTimeout(launchEmoji, i * 150);
+    }
+
+    // ===========================
+    // CONFETTI BURST ON CLICK
+    // ===========================
+    document.addEventListener('click', (e) => {
+      for (let i = 0; i < 50; i++) {
+        const piece = confettiPieces[i % confettiPieces.length];
+        piece.x = e.clientX;
+        piece.y = e.clientY;
+        piece.velocityX = Math.random() * 12 - 6;
+        piece.velocityY = Math.random() * -8 - 2;
+      }
+    });
+  </script>
+</body>
+</html>
