@@ -28,7 +28,7 @@
       border-radius: 16px;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
       padding: 40px 48px 36px;
-      max-width: 780px;
+      max-width: 920px;
       width: 95%;
     }
 
@@ -173,7 +173,7 @@
     <h1>HDB Market: Supply and Demand</h1>
     <p class="subtitle">Shift the supply curve to observe equilibrium changes</p>
 
-    <canvas id="chart" width="660" height="480"></canvas>
+    <canvas id="chart" width="820" height="580"></canvas>
 
     <div class="controls">
       <div class="slider-label">Shift Supply Curve</div>
@@ -208,7 +208,7 @@
     const qtyDirEl = document.getElementById('qtyDir');
 
     // --- Graph layout ---
-    const margin = { top: 40, right: 50, bottom: 56, left: 72 };
+    const margin = { top: 48, right: 60, bottom: 64, left: 80 };
     const W = canvas.width - margin.left - margin.right;
     const H = canvas.height - margin.top - margin.bottom;
 
@@ -292,22 +292,22 @@
 
       // --- Axes ---
       const axisColor = '#9ca3af';
-      const axisWeight = 1.5;
+      const axisWeight = 2.5;
 
       // Y-axis
-      drawLine(margin.left, margin.top - 8, margin.left, margin.top + H, axisColor, axisWeight);
-      drawArrowHead(margin.left, margin.top - 8, -Math.PI / 2, 8, axisColor);
+      drawLine(margin.left, margin.top - 10, margin.left, margin.top + H, axisColor, axisWeight);
+      drawArrowHead(margin.left, margin.top - 10, -Math.PI / 2, 10, axisColor);
 
       // X-axis
-      drawLine(margin.left, margin.top + H, margin.left + W + 8, margin.top + H, axisColor, axisWeight);
-      drawArrowHead(margin.left + W + 8, margin.top + H, 0, 8, axisColor);
+      drawLine(margin.left, margin.top + H, margin.left + W + 10, margin.top + H, axisColor, axisWeight);
+      drawArrowHead(margin.left + W + 10, margin.top + H, 0, 10, axisColor);
 
       // Axis labels
-      drawText('Price of HDBs ($)', margin.left, margin.top - 18, {
-        size: 13, weight: '600', color: '#374151', align: 'left'
+      drawText('Price of HDBs ($)', margin.left, margin.top - 24, {
+        size: 16, weight: '700', color: '#374151', align: 'left'
       });
-      drawText('Quantity of HDBs', margin.left + W / 2, margin.top + H + 44, {
-        size: 14, weight: '600', color: '#374151'
+      drawText('Quantity of HDBs', margin.left + W / 2, margin.top + H + 50, {
+        size: 16, weight: '700', color: '#374151'
       });
 
       // --- Tick marks on axes ---
@@ -317,9 +317,9 @@
       priceTicks.forEach(p => {
         const y = yPx(p);
         if (p > 0) {
-          drawLine(margin.left - 4, y, margin.left, y, '#9ca3af', 1);
-          drawText('$' + p, margin.left - 10, y, {
-            size: 11, weight: '400', color: '#6b7280', align: 'right'
+          drawLine(margin.left - 5, y, margin.left, y, '#9ca3af', 1.5);
+          drawText('$' + p, margin.left - 12, y, {
+            size: 14, weight: '500', color: '#6b7280', align: 'right'
           });
         }
       });
@@ -327,16 +327,16 @@
       qtyTicks.forEach(q => {
         const x = xPx(q);
         if (q > 0) {
-          drawLine(x, margin.top + H, x, margin.top + H + 4, '#9ca3af', 1);
-          drawText(q.toString(), x, margin.top + H + 16, {
-            size: 11, weight: '400', color: '#6b7280'
+          drawLine(x, margin.top + H, x, margin.top + H + 5, '#9ca3af', 1.5);
+          drawText(q.toString(), x, margin.top + H + 20, {
+            size: 14, weight: '500', color: '#6b7280'
           });
         }
       });
 
       // Origin label
-      drawText('0', margin.left - 10, margin.top + H + 16, {
-        size: 11, weight: '400', color: '#6b7280', align: 'right'
+      drawText('0', margin.left - 12, margin.top + H + 20, {
+        size: 14, weight: '500', color: '#6b7280', align: 'right'
       });
 
       // --- Demand curve (fixed) ---
@@ -346,7 +346,7 @@
 
       ctx.save();
       ctx.strokeStyle = '#dc2626';
-      ctx.lineWidth = 2.8;
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
       ctx.moveTo(xPx(dQ1), yPx(dP1));
       ctx.lineTo(xPx(dQ2), yPx(dP2));
@@ -354,8 +354,8 @@
       ctx.restore();
 
       // Demand label at upper end
-      drawText('Demand of HDBs', xPx(20) + 8, yPx(demandP(20)) - 14, {
-        size: 13, weight: '600', color: '#dc2626', align: 'left'
+      drawText('Demand of HDBs', xPx(20) + 10, yPx(demandP(20)) - 16, {
+        size: 16, weight: '700', color: '#dc2626', align: 'left'
       });
 
       // --- Original supply curve (ghost if shifted) ---
@@ -368,8 +368,8 @@
 
         ctx.save();
         ctx.strokeStyle = 'rgba(37, 99, 235, 0.2)';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([6, 4]);
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([8, 5]);
         ctx.beginPath();
         ctx.moveTo(xPx(sQ1_base), yPx(Math.max(0, sP1_base)));
         ctx.lineTo(xPx(sQ2_base), yPx(Math.min(P_MAX, sP2_base)));
@@ -377,8 +377,8 @@
         ctx.restore();
 
         // Ghost label
-        drawText('S\u2080', xPx(sQ2_base) + 6, yPx(sP2_base) - 4, {
-          size: 12, weight: '500', color: 'rgba(37, 99, 235, 0.35)', align: 'left'
+        drawText('S\u2080', xPx(sQ2_base) + 8, yPx(sP2_base) - 4, {
+          size: 15, weight: '600', color: 'rgba(37, 99, 235, 0.35)', align: 'left'
         });
       }
 
@@ -393,7 +393,7 @@
 
       ctx.save();
       ctx.strokeStyle = '#2563eb';
-      ctx.lineWidth = 2.8;
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
       ctx.moveTo(xPx(sQStart), yPx(Math.max(0, sPStart)));
       ctx.lineTo(xPx(sQEnd), yPx(Math.min(P_MAX, sPEnd)));
@@ -403,15 +403,15 @@
       // Supply label at upper end
       const labelQ = Math.min(sQEnd, shift + 160);
       const labelP = supplyP(labelQ, shift);
-      drawText('Supply of HDBs', xPx(labelQ) + 8, yPx(labelP) + 14, {
-        size: 13, weight: '600', color: '#2563eb', align: 'left'
+      drawText('Supply of HDBs', xPx(labelQ) + 10, yPx(labelP) + 16, {
+        size: 16, weight: '700', color: '#2563eb', align: 'left'
       });
 
       // Subscript for shifted supply
       if (shift !== 0) {
         const subscript = shift > 0 ? 'S\u2081' : 'S\u2081';
-        drawText(subscript, xPx(labelQ) + 8, yPx(labelP) + 30, {
-          size: 11, weight: '500', color: 'rgba(37, 99, 235, 0.6)', align: 'left'
+        drawText(subscript, xPx(labelQ) + 10, yPx(labelP) + 34, {
+          size: 14, weight: '600', color: 'rgba(37, 99, 235, 0.6)', align: 'left'
         });
       }
 
@@ -420,32 +420,32 @@
       const eqYPx = yPx(pE);
 
       // Dashed line to Y-axis
-      drawLine(margin.left, eqYPx, eqXPx, eqYPx, '#6b7280', 1.2, [5, 4]);
+      drawLine(margin.left, eqYPx, eqXPx, eqYPx, '#6b7280', 1.8, [6, 5]);
       // Dashed line to X-axis
-      drawLine(eqXPx, eqYPx, eqXPx, margin.top + H, '#6b7280', 1.2, [5, 4]);
+      drawLine(eqXPx, eqYPx, eqXPx, margin.top + H, '#6b7280', 1.8, [6, 5]);
 
       // Base equilibrium dashed lines (ghost) if shifted
       if (shift !== 0) {
         const baseEqXPx = xPx(BASE_Q);
         const baseEqYPx = yPx(BASE_P);
 
-        drawLine(margin.left, baseEqYPx, baseEqXPx, baseEqYPx, '#d1d5db', 1, [3, 3]);
-        drawLine(baseEqXPx, baseEqYPx, baseEqXPx, margin.top + H, '#d1d5db', 1, [3, 3]);
+        drawLine(margin.left, baseEqYPx, baseEqXPx, baseEqYPx, '#d1d5db', 1.5, [4, 4]);
+        drawLine(baseEqXPx, baseEqYPx, baseEqXPx, margin.top + H, '#d1d5db', 1.5, [4, 4]);
 
         // Ghost equilibrium dot
         ctx.save();
         ctx.fillStyle = 'rgba(107, 114, 128, 0.25)';
         ctx.beginPath();
-        ctx.arc(baseEqXPx, baseEqYPx, 5, 0, Math.PI * 2);
+        ctx.arc(baseEqXPx, baseEqYPx, 7, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
         // P0 and Q0 labels
-        drawText('P\u2080', margin.left - 10, baseEqYPx, {
-          size: 11, weight: '600', color: '#d1d5db', align: 'right'
+        drawText('P\u2080', margin.left - 12, baseEqYPx, {
+          size: 14, weight: '600', color: '#d1d5db', align: 'right'
         });
-        drawText('Q\u2080', baseEqXPx, margin.top + H + 16, {
-          size: 11, weight: '600', color: '#d1d5db'
+        drawText('Q\u2080', baseEqXPx, margin.top + H + 20, {
+          size: 14, weight: '600', color: '#d1d5db'
         });
       }
 
@@ -453,29 +453,29 @@
       ctx.save();
       ctx.fillStyle = '#1a1a2e';
       ctx.beginPath();
-      ctx.arc(eqXPx, eqYPx, 6, 0, Math.PI * 2);
+      ctx.arc(eqXPx, eqYPx, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(eqXPx, eqYPx, 2.5, 0, Math.PI * 2);
+      ctx.arc(eqXPx, eqYPx, 3.5, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
       // Equilibrium label
       const eqLabelSuffix = shift !== 0 ? '\u2081' : '';
-      drawText('E' + eqLabelSuffix, eqXPx + 12, eqYPx - 12, {
-        size: 13, weight: '700', color: '#1a1a2e'
+      drawText('E' + eqLabelSuffix, eqXPx + 14, eqYPx - 14, {
+        size: 16, weight: '700', color: '#1a1a2e'
       });
 
       // P_eq and Q_eq on axes
       const pLabel = shift !== 0 ? 'P\u2081' : 'P*';
       const qLabel = shift !== 0 ? 'Q\u2081' : 'Q*';
 
-      drawText(pLabel, margin.left - 10, eqYPx, {
-        size: 12, weight: '600', color: '#1a1a2e', align: 'right'
+      drawText(pLabel, margin.left - 12, eqYPx, {
+        size: 15, weight: '700', color: '#1a1a2e', align: 'right'
       });
-      drawText(qLabel, eqXPx, margin.top + H + 16, {
-        size: 12, weight: '600', color: '#1a1a2e'
+      drawText(qLabel, eqXPx, margin.top + H + 20, {
+        size: 15, weight: '700', color: '#1a1a2e'
       });
 
       // --- Update info boxes ---
