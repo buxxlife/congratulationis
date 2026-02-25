@@ -208,7 +208,7 @@
     const qtyDirEl = document.getElementById('qtyDir');
 
     // --- Graph layout ---
-    const margin = { top: 30, right: 50, bottom: 56, left: 72 };
+    const margin = { top: 30, right: 50, bottom: 56, left: 100 };
     const W = canvas.width - margin.left - margin.right;
     const H = canvas.height - margin.top - margin.bottom;
 
@@ -303,7 +303,7 @@
       drawArrowHead(margin.left + W + 8, margin.top + H, 0, 8, axisColor);
 
       // Axis labels
-      drawText('Price of HDBs ($)', margin.left - 8, margin.top + H / 2, {
+      drawText('Price of HDBs ($)', margin.left - 48, margin.top + H / 2, {
         size: 14, weight: '600', color: '#374151',
         rotate: -Math.PI / 2
       });
@@ -414,35 +414,6 @@
         drawText(subscript, xPx(labelQ) + 8, yPx(labelP) + 30, {
           size: 11, weight: '500', color: 'rgba(37, 99, 235, 0.6)', align: 'left'
         });
-      }
-
-      // --- Shift arrow on supply curve ---
-      if (shift !== 0) {
-        const arrowP = 45;
-        const baseQAtArrowP = (arrowP - 10) / 0.5;       // Q on base supply at this P
-        const shiftedQAtArrowP = (arrowP - 10) / 0.5 + shift; // Q on shifted supply at this P
-
-        const arrowStartX = xPx(baseQAtArrowP);
-        const arrowEndX = xPx(shiftedQAtArrowP);
-        const arrowY = yPx(arrowP);
-
-        // Only draw if both points are in visible range
-        if (baseQAtArrowP >= 0 && baseQAtArrowP <= Q_MAX &&
-            shiftedQAtArrowP >= 0 && shiftedQAtArrowP <= Q_MAX) {
-
-          ctx.save();
-          ctx.strokeStyle = '#7c3aed';
-          ctx.lineWidth = 2;
-          ctx.setLineDash([4, 3]);
-          ctx.beginPath();
-          ctx.moveTo(arrowStartX, arrowY);
-          ctx.lineTo(arrowEndX, arrowY);
-          ctx.stroke();
-          ctx.restore();
-
-          const angle = shift > 0 ? 0 : Math.PI;
-          drawArrowHead(arrowEndX, arrowY, angle, 8, '#7c3aed');
-        }
       }
 
       // --- Equilibrium point & dashed lines ---
