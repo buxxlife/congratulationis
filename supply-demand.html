@@ -419,8 +419,10 @@
       const eqXPx = xPx(qE);
       const eqYPx = yPx(pE);
 
-      // Dashed line to Y-axis
-      drawLine(margin.left, eqYPx, eqXPx, eqYPx, '#6b7280', 1.8, [6, 5]);
+      // Dashed line to Y-axis (colored when shifted to emphasize price change)
+      const hDashColor = shift !== 0 ? (pE > BASE_P ? '#dc2626' : '#16a34a') : '#6b7280';
+      const hDashWidth = shift !== 0 ? 2.5 : 1.8;
+      drawLine(margin.left, eqYPx, eqXPx, eqYPx, hDashColor, hDashWidth, [6, 5]);
       // Dashed line to X-axis
       drawLine(eqXPx, eqYPx, eqXPx, margin.top + H, '#6b7280', 1.8, [6, 5]);
 
@@ -447,6 +449,85 @@
         drawText('Q\u2080', baseEqXPx, margin.top + H + 20, {
           size: 14, weight: '600', color: '#d1d5db'
         });
+
+        // --- Price change indicator (band + arrow + label) ---
+        const priceUp = pE > BASE_P;
+        const bandColor = priceUp ? 'rgba(220, 38, 38, 0.10)' : 'rgba(22, 163, 74, 0.10)';
+        const accentColor = priceUp ? '#dc2626' : '#16a34a';
+        const bandTop = Math.min(eqYPx, baseEqYPx);
+        const bandBot = Math.max(eqYPx, baseEqYPx);
+        const bandWidth = 50;
+
+        // Shaded band between P0 and P1
+        ctx.save();
+        ctx.fillStyle = bandColor;
+        ctx.fillRect(margin.left + 1, bandTop, bandWidth, bandBot - bandTop);
+        ctx.restore();
+
+        // Vertical arrow from P0 to P1 (along left edge of band)
+        const arrowX = margin.left + 14;
+        const arrowFrom = baseEqYPx;
+        const arrowTo = eqYPx;
+        const arrowLen = Math.abs(arrowTo - arrowFrom);
+
+        if (arrowLen > 4) {
+          // Arrow shaft
+          drawLine(arrowX, arrowFrom, arrowX, arrowTo, accentColor, 2.5);
+
+          // Arrowhead pointing toward P1
+          const dir = arrowTo > arrowFrom ? 1 : -1;
+          const headSize = 7;
+          ctx.save();
+          ctx.fillStyle = accentColor;
+          ctx.beginPath();
+          ctx.moveTo(arrowX, arrowTo);
+          ctx.lineTo(arrowX - headSize * 0.55, arrowTo - dir * headSize);
+          ctx.lineTo(arrowX + headSize * 0.55, arrowTo - dir * headSize);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+
+          // Small tick marks at P0 and P1 ends
+          drawLine(arrowX - 5, arrowFrom, arrowX + 5, arrowFrom, accentColor, 2);
+          drawLine(arrowX - 5, arrowTo, arrowX + 5, arrowTo, accentColor, 2);
+        }
+
+        // Price change label (positioned to the right of the band)
+        const labelX = margin.left + bandWidth + 10;
+        const labelY = (bandTop + bandBot) / 2;
+        const priceChangeText = priceUp
+          ? 'Price rose: $' + BASE_P + ' \u2192 $' + pE.toFixed(0)
+          : 'Price fell: $' + BASE_P + ' \u2192 $' + pE.toFixed(0);
+
+        // Background pill for readability
+        ctx.save();
+        const pillFont = '600 13px Inter, sans-serif';
+        ctx.font = pillFont;
+        const textW = ctx.measureText(priceChangeText).width;
+        const pillPadX = 8;
+        const pillPadY = 5;
+        const pillH = 22;
+        const pillW = textW + pillPadX * 2;
+        const pillX = labelX;
+        const pillY = labelY - pillH / 2;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.globalAlpha = 0.92;
+        ctx.beginPath();
+        ctx.roundRect(pillX, pillY, pillW, pillH, 4);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        ctx.strokeStyle = accentColor;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(pillX, pillY, pillW, pillH, 4);
+        ctx.stroke();
+        ctx.restore();
+
+        drawText(priceChangeText, labelX + pillW / 2, labelY, {
+          size: 13, weight: '600', color: accentColor
+        });
       }
 
       // Equilibrium dot
@@ -471,8 +552,9 @@
       const pLabel = shift !== 0 ? 'P\u2081' : 'P*';
       const qLabel = shift !== 0 ? 'Q\u2081' : 'Q*';
 
+      const pLabelColor = shift !== 0 ? (pE > BASE_P ? '#dc2626' : '#16a34a') : '#1a1a2e';
       drawText(pLabel, margin.left - 12, eqYPx, {
-        size: 15, weight: '700', color: '#1a1a2e', align: 'right'
+        size: 15, weight: '700', color: pLabelColor, align: 'right'
       });
       drawText(qLabel, eqXPx, margin.top + H + 20, {
         size: 15, weight: '700', color: '#1a1a2e'
